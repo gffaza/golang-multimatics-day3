@@ -11,7 +11,8 @@ func main() {
 	// pustaka.BilangHalo()
 	// pustaka.JalanAntrian()
 	// pustaka.JalanAntrianWG()
-	pustaka.JalanAntrianChannel()
+	// pustaka.JalanAntrianChannel()
+	pustaka.JalanAntrianGabungan()
 	dHms := struct{
 		nama string
 		umur int

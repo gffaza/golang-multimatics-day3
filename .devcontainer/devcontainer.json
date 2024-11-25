@@ -27,7 +27,8 @@
                 "eamodio.gitlens",
                 "redhat.vscode-yaml",
                 "yzhang.markdown-all-in-one",
-                "GitHub.vscode-pull-request-github"
+                "GitHub.vscode-pull-request-github",
+                "Codeium.codeium"
             ]
         }
     }

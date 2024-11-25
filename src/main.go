@@ -6,14 +6,21 @@ import (
 )
 
 
+
 func main() {
+	pustaka.Csv()
+	// pustaka.BacaDB()
+	// pustaka.TulisDB()
 	// fmt.Println("Go World!") 
 	// pustaka.BilangHalo()
 	// pustaka.JalanAntrian()
 	// pustaka.JalanAntrianWG()
 	// pustaka.JalanAntrianChannel()
 	// pustaka.JalanAntrianGabungan()
-	pustaka.Baca()
+	// pustaka.Baca()
+	// totalAnon, rataAnon := pustaka.Anon(1, 2, 3, 4, 5, 6, 3)
+	// fmt.Printf("Total: %d. Rata2: %f", totalAnon, rataAnon)
+	// fmt.Println()
 	// dHms := struct{
 	// 	nama string
 	// 	umur int

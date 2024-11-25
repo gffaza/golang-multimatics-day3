@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"main/pustaka"
 )
 
 
 func main() {
 	fmt.Println("Go World!") 
-	
+	pustaka.BilangHalo()
 	dHms := struct{
 		nama string
 		umur int

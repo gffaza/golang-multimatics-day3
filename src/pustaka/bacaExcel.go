@@ -1,61 +1,74 @@
 package pustaka
 
 import (
-    "fmt"
-    "time"
+	"fmt"
+	"log"
+	"strconv"
+	"sync"
+	"time"
+
+	"github.com/tealeg/xlsx"
 )
 
 func Baca() {
 	var wg sync.WaitGroup
 	var waktuMulai = time.Now()
-		counter := 0
-		totalAmount := 0
+	counter := 0
+	totalAmount := 0
 
-		type RowData struct {
-			index int
-			Row *xlsx.Row
+	type RawData struct {
+		Index int
+		Row   *xlsx.Row
+	}
+	rowsChannel := make(chan RawData)
+
+	filePath := "./forTraining.xlsx"
+	xlFile, err := xlsx.OpenFile(filePath)
+	if err != nil {
+		log.Fatalf("Error opening file: %s", err)
+	}
+
+	sheet := xlFile.Sheets[0]
+
+	results := make([]string, len(sheet.Rows))
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for i, row := range sheet.Rows {
+			if i == 0 {
+				continue
+			}
+			rowsChannel <- RawData{Index: i, Row: row}
 		}
-		rowsChannel := make(chan RowData)
+		close(rowsChannel)
+	}()
 
-		filepath := "forTraining.xlsx"
-		xlFile, err := xlsx.OpenFile(filepath)
-		if err!= nill{
-			log.Fatal("Couldn't open file: %v", err)
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for rowData := range rowsChannel {
+			id := rowData.Row.Cells[1].String()
+			initiatorRefNo := rowData.Row.Cells[3].String()
+			sysRefNo := rowData.Row.Cells[4].String()
+
+			var amount string = "0"
+
+			results[rowData.Index] = fmt.Sprintf("ID : %s, Initiator Ref No : %s, Sys Ref No : %s, Amount : %s", id, initiatorRefNo, sysRefNo, amount)
+			convertAmount, err := strconv.Atoi(amount)
+			if err != nil {
+				totalAmount += convertAmount
+			}
 		}
+	}()
 
-		sheet := xlFile.NewSheet[0]
+	wg.Wait()
 
-		results := make([]string, len(sheet.Rows))
+	for _, result := range results {
+		fmt.Println(result)
+		counter++
+	}
 
-		wg.Add(1)
-		go func(){
-			defer wg.Done()
-			for i, row := range sheet.Rows{
-				if i == 0{
-					continue
-				}
-				rowsChannel <- RowData{Index : i, Row: row}
-			}	
-			close(rowsChannel)
-		}()
-
-		wg.Add(1)
-		go func(){
-			defer wg.Done()
-            for rowData := range rowsChannel{
-
-				id := rowData.Row.Cells[1].String()
-				initiatorRefNo := rowData.Row.Cells[3].String()
-				sysRefNo := rowData.Row.Cells[4].String()
-
-				var amount string = "0"
-
-
-				results[rowData.index] = fmt.Sprintf("ID: %s, Initiator: %s, SYS_REF_NO: %s, AMOUNT: %s", id, initiatorRefNo, sysRefNo, amount)
-				convertAmount, errr := strconv.Atoi(amount)
-				if errr!= nil{
-					totalAmount, err += convertAmount
-                }
-            }
-		}
+	var WaktuSelesai = time.Since(waktuMulai)
+	log.Printf("Waktu selesai: %v, Sebanyak: %d, Data: %d, Total Amount: %d", WaktuSelesai, counter, len(results), totalAmount)
 }

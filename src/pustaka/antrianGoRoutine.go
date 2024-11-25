@@ -6,7 +6,8 @@ import (
 
 func JalanAntrian(){
 
-	go printMessage("Goroutine 1 ")
+	// awalan go pasti go routine (asyncronus)
+	go printMessage("Goroutine 1 ") 
 	go printMessage("Goroutine 2")
 
 	printMessage("Main Goroutine")

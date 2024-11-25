@@ -9,6 +9,8 @@ import (
 func main() {
 	fmt.Println("Go World!") 
 	pustaka.BilangHalo()
+	pustaka.JalanAntrian()
+	pustaka.JalanAntrianWG()
 	dHms := struct{
 		nama string
 		umur int
